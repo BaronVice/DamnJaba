@@ -8,17 +8,8 @@ import GivenPlaces.Utilits.*;
 *      Как вариант сделать класс для записи и чтения мест  */
 public class Main {
     public static void main(String[] args) {
-        Location place1 = new Location();
 
-        try {
-            place1.setName("          ");
-            place1.setDescription("I live here");
-        }
-        catch (EmptyStringException e){
-            System.out.println("Имя не может быть пустым");
-        }
+        Interaction.mainMenu();
 
-
-        System.out.println(place1);
     }
 }

@@ -27,7 +27,7 @@ public abstract class Place {
 
     public void setName(String name) throws EmptyStringException{
         if (name.trim().isEmpty())
-            throw new EmptyStringException("empty string is not allowed here");
+            throw new EmptyStringException("имя не может быть пустым");
 
         this.name = name.substring(0,1).toUpperCase() + name.substring(1);
     }
