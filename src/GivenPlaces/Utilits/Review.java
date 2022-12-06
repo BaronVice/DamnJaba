@@ -6,13 +6,7 @@ public class Review {
     private int mark;
     private String comment;
 
-    /*
-    public Review(String userName, int mark) {
-        this.userName = userName;
-        this.mark = mark;
-        this.comment = "No comment here";
-    }
-     */
+    /* TODO: сделать проверки в сетерах: на непустые имя и комментарий, на оценку*/
 
     public Review(String userName, int mark, String comment) {
         this.userName = userName;

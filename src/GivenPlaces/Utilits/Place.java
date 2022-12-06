@@ -1,56 +1,38 @@
 package GivenPlaces.Utilits;
 
-import java.util.ArrayList;
-import java.util.List;
 
-public class Place {
-    protected double latitude;
-    protected double longitude;
+/* TODO: сделать проверки в сетерах: на непустые имена и описания, на парс в double
+*   Идеи: сделать базу с пользователями, комменатрии можно оставлять если пользователь существует,
+*   Можно использовать дату и время для отзыва
+*         */
+public abstract class Place {
     protected String name;
     protected String description;
-    protected List<Review> reviews = new ArrayList<>();
-
     public String getDescription() {
         return description;
     }
 
+    public abstract String getPlaceType();
+
     public void setDescription(String description) {
-        this.description = description;
+        if (description.trim().isEmpty())
+            this.description = "Описание отсутствует";
+        else
+            this.description = description;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+    public void setName(String name) throws EmptyStringException{
+        if (name.trim().isEmpty())
+            throw new EmptyStringException("empty string is not allowed here");
 
-    public double getLatitude() {
-        return latitude;
-    }
-
-    public void setLatitude(double latitude) {
-        this.latitude = latitude;
-    }
-
-    public double getLongitude() {
-        return longitude;
-    }
-
-    public void setLongitude(double longitude) {
-        this.longitude = longitude;
-    }
-
-    public void showCoordinates(){
-        System.out.println(String.format("Latitude: %f\nLongitude: %f", latitude, longitude));
-    }
-
-    public void addReview(){
-
+        this.name = name.substring(0,1).toUpperCase() + name.substring(1);
     }
 
     public String toString(){
-        return String.format("Название: %s\nОписание: %s", name, description);
+        return String.format("%s: %s\nОписание: %s", getPlaceType(), name, description);
     }
 }
