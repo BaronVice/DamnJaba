@@ -1,4 +1,7 @@
 import GivenPlaces.Utilits.*;
+import GivenPlaces.Utilits.CustomExceptions.NotExistingCommandException;
+
+import java.io.IOException;
 
 /* TODO: для города, столицы и региона добавить население, подумать о переносе отзывов к функционалу локации
 *   В Place можно положить страну
@@ -7,8 +10,12 @@ import GivenPlaces.Utilits.*;
 *      Как вариант сделать класс для записи и чтения мест  */
 public class Main {
     public static void main(String[] args) {
-
-        Menu.mainMenu();
+        try{
+            Menu.mainMenu();
+        }
+        catch (NotExistingCommandException e){
+            e.printStackTrace();
+        }
 
     }
 }

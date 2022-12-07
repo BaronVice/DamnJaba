@@ -1,8 +1,5 @@
 package GivenPlaces;
 
-import GivenPlaces.Utilits.Place;
-import GivenPlaces.Utilits.Review;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,11 +7,19 @@ public class Region extends Place {
 
     protected List<City> cities = new ArrayList<>();
 
-    public Region(){
+    public Region(String name, String description){
+        super(name, description);
+    }
+
+    public static class RegionInteraction extends Interaction{
 
     }
 
-    public String getPlaceType() {
+    public static void buildObject(String name, String description){
+        places.add(new Region(name, description));
+    }
+
+    public static String getPlaceType() {
         return "Регион";
     }
 

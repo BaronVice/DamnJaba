@@ -1,12 +1,22 @@
 package GivenPlaces;
 
-import GivenPlaces.Utilits.Place;
-
 public class City extends Place {
     private int population;
     private double square;
 
-    public String getPlaceType() {
+    public City(String name, String description){
+        super(name, description);
+    }
+
+    public static class CityInteraction extends Interaction{
+
+    }
+
+    public static void buildObject(String name, String description){
+        places.add(new City(name, description));
+    }
+
+    public static String getPlaceType() {
         return "Город";
     }
 

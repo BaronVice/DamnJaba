@@ -1,4 +1,4 @@
-package GivenPlaces.Utilits;
+package GivenPlaces.Utilits.CustomExceptions;
 
 public class EmptyStringException extends Exception{
     public EmptyStringException(){
