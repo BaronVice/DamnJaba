@@ -10,6 +10,10 @@ public class Region extends Place {
 
     protected List<City> cities = new ArrayList<>();
 
+    public Region(){
+
+    }
+
     public String getPlaceType() {
         return "Регион";
     }

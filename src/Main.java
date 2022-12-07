@@ -1,4 +1,3 @@
-import GivenPlaces.Location;
 import GivenPlaces.Utilits.*;
 
 /* TODO: для города, столицы и региона добавить население, подумать о переносе отзывов к функционалу локации
@@ -9,7 +8,7 @@ import GivenPlaces.Utilits.*;
 public class Main {
     public static void main(String[] args) {
 
-        Interaction.mainMenu();
+        Menu.mainMenu();
 
     }
 }

@@ -1,9 +1,13 @@
 package GivenPlaces.Utilits;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 /* TODO: попробовать создание вкрутить в конструктор класса, изменение и взаимодействие отдельными методами в классы */
-public class Interaction {
+public class Menu {
+
+    List<Place> existingPlaces = new ArrayList<>();
     private static Scanner scan = new Scanner(System.in);
 
     private static String inputChoice(){
@@ -18,22 +22,22 @@ public class Interaction {
                 4. %1$s регион
                 5. Назад""", option);
     }
+    private static void showObjectDescription(){
+
+    }
 
     private static void interactWithObject(String option){
         showMenuDescription(option);
         String placeType = scan.nextLine();
 
         switch (option) {
-            case "Создать" -> createObject(placeType);
-            case "Удалить" -> deleteObject(placeType);
-            case "Изменить" -> changeObject(placeType);
-            case "Вызвать" -> callObject(placeType);
+            case "Создать" -> Place.Interaction.createObject();
+            case "Удалить" -> Place.Interaction.deleteObject();
+            case "Изменить" -> Place.Interaction.changeObject();
+            case "Вызвать" -> Place.Interaction.callObject();
         }
     }
 
-    private static void showObjectDescription(){
-
-    }
 
     public static void mainMenu(){
         System.out.println("""
