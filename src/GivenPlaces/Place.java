@@ -1,9 +1,7 @@
 package GivenPlaces;
 
 
-import GivenPlaces.Utilits.CustomExceptions.EmptyPlacesException;
-import GivenPlaces.Utilits.CustomExceptions.EmptyStringException;
-import GivenPlaces.Utilits.CustomExceptions.NotExistingCommandException;
+import GivenPlaces.Utilits.CustomExceptions.*;
 import GivenPlaces.Utilits.InteractionOperations;
 
 import java.util.Set;
@@ -44,40 +42,76 @@ public abstract class Place {
                 }
             );
         }
-        private static String handleName(String name) throws EmptyStringException {
+        protected static String handleName() throws EmptyStringException {
+            System.out.print("Название: ");
+            String name = scan.nextLine();
+
             if (name.trim().isEmpty())
                 throw new EmptyStringException("название не может быть пустым");
-
             name = name.substring(0,1).toUpperCase() + name.substring(1);
 
             return name;
         }
-        private static String handleDescription(String description) {
+        protected static String handleDescription() {
+            System.out.print("Описание: ");
+            String description = scan.nextLine();
 
             if (description.trim().isEmpty())
                 description = "Описание отсутствует";
 
             return description;
         }
-        private static String createObject() throws EmptyStringException{
+        protected static String createObject() throws EmptyStringException{
 
-            System.out.print("Название: ");
-            String name = handleName(scan.nextLine());
-
-            System.out.print("\nОписание: ");
-            String description = handleDescription(scan.nextLine());
+            String name = handleName();
+            String description = handleDescription();
 
             buildObject(name, description);
             return String.format("Новое место \"%s %s\" успешно добавлено", getPlaceType(), name);
         }
-        private static String deleteObject() throws EmptyPlacesException {
+        protected static String deleteObject() throws EmptyPlacesException {
             emptyPlaces();
-            return "Объект успешно удален";
+            String message = "Выбранное место не найдено";
+
+            System.out.print("Название места для удаления: ");
+            String toFind = scan.nextLine();
+            if (places.removeIf(place -> place.name.equals(toFind)))
+                message = "Выбранное место успешно удалено";
+
+            return message;
         }
-        private static String changeObject() throws EmptyPlacesException {
+        // TODO: проверить на корректность вывода в случае неверной команды
+        protected static String changeObject() throws EmptyPlacesException, EmptyStringException {
             emptyPlaces();
-            return "изменено";
-            // Сделать описание, что можно изменить
+            String message = "Выбранное место не найдено";
+
+            System.out.println("""
+                1. Изменить название
+                2. Изменить описание
+                Выбор:\040""");
+            String option = scan.nextLine();
+
+            switch (option) {
+                case "1", "2" -> {
+                    System.out.print("Название места для изменения: ");
+                    String toFind = scan.nextLine();
+
+                    for (Place place : places) {
+                        if (place.name.equals(toFind)) {
+                            if (option.equals("1"))
+                                place.name = handleName();
+                            else
+                                place.description = handleDescription();
+                        }
+                    }
+                }
+                default -> {
+                    System.out.println("Неверно заданная команда. Попробуйте еще раз");
+                    changeObject();
+                }
+            }
+
+            return message;
         }
         private static String callObject() throws EmptyPlacesException {
             emptyPlaces();
@@ -86,7 +120,7 @@ public abstract class Place {
         }
     }
 
-    private static StringBuilder showObjects(){
+    protected static StringBuilder showObjects(){
         StringBuilder message = new StringBuilder();
         for (Place place : places)
             message.append(place.toString());
@@ -98,28 +132,13 @@ public abstract class Place {
         return "Место";
     };
 
-    private static void emptyPlaces() throws EmptyPlacesException {
+    protected static void emptyPlaces() throws EmptyPlacesException {
         if (places.size() == 0)
             throw new EmptyPlacesException("Удалять нечего - список пуст");
     }
 
-    private static void buildObject(String name, String description){}
+    protected static void buildObject(String name, String description){}
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description){
-        this.description = description;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name){
-        this.name = name;
-    }
 
     public String toString(){
         return String.format("%s: %s\nОписание: %s\n", getPlaceType(), name, description);

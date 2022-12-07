@@ -1,18 +1,26 @@
 package GivenPlaces;
 
+import GivenPlaces.Utilits.CustomExceptions.EmptyPlacesException;
+
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class Region extends Place {
+    private static Set<Region> places = new HashSet<>();
 
-    protected List<City> cities = new ArrayList<>();
+    private List<City> cities = new ArrayList<>();
 
     public Region(String name, String description){
         super(name, description);
     }
 
     public static class RegionInteraction extends Interaction{
-
+        private static String callObject() throws EmptyPlacesException {
+            emptyPlaces();
+            return "call regionInteraction";
+        }
     }
 
     public static void buildObject(String name, String description){

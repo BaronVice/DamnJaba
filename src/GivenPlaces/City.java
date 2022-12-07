@@ -1,19 +1,25 @@
 package GivenPlaces;
 
+import GivenPlaces.Utilits.CustomExceptions.EmptyPlacesException;
+
+import java.util.HashSet;
+import java.util.Set;
+
 public class City extends Place {
     private int population;
     private double square;
+    private static Set<Location> places = new HashSet<>();
+
 
     public City(String name, String description){
         super(name, description);
     }
 
     public static class CityInteraction extends Interaction{
-
-    }
-
-    public static void buildObject(String name, String description){
-        places.add(new City(name, description));
+        private static String callObject() throws EmptyPlacesException {
+            emptyPlaces();
+            return "call cityInteraction";
+        }
     }
 
     public static String getPlaceType() {

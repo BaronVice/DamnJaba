@@ -1,22 +1,30 @@
 package GivenPlaces;
 
+import GivenPlaces.Utilits.CustomExceptions.EmptyPlacesException;
 import GivenPlaces.Utilits.Review;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class Location extends Place {
-    protected List<Review> reviews = new ArrayList<>();
+//    private List<Review> reviews = new ArrayList<>();
+    private static Set<Location> places = new HashSet<>();
+
 
     public Location(String name, String description){
         super(name, description);
     }
 
     public static class LocationInteraction extends Interaction{
-
+        private static String callObject() throws EmptyPlacesException {
+            emptyPlaces();
+            return "call locationInteraction";
+        }
     }
 
-    public static void buildObject(String name, String description){
+    protected static void buildObject(String name, String description){
         places.add(new Location(name, description));
     }
 
