@@ -19,7 +19,7 @@ public abstract class Place {
     // Описание места
     protected String description;
     // Все существующие имена мест
-    protected static Set<Place> places = new HashSet<>();
+    private static Set<Place> places = new HashSet<>();
     protected static Scanner scan = new Scanner(System.in);
 
     public Place(String name, String description){
@@ -27,21 +27,8 @@ public abstract class Place {
         this.description = description;
     }
 
-    protected static class Interaction implements InteractionOperations {
+    protected static class Interaction {
 
-        public static void handleOption(String option) throws EmptyStringException, EmptyPlacesException, NotExistingCommandException {
-            System.out.println(
-                switch (option) {
-                    case "Создать" -> createObject();
-                    case "Удалить" -> deleteObject();
-                    case "Изменить" -> changeObject();
-                    case "Вызвать" -> callObject();
-                    case "Показать" -> showObjects();
-                    default -> throw new NotExistingCommandException(
-                            String.format("Системная ошибка: команда \"%s\" не обрабатывается", option));
-                }
-            );
-        }
         protected static String handleName() throws EmptyStringException {
             System.out.print("Название: ");
             String name = scan.nextLine();
@@ -69,8 +56,8 @@ public abstract class Place {
             buildObject(name, description);
             return String.format("Новое место \"%s %s\" успешно добавлено", getPlaceType(), name);
         }
-        protected static String deleteObject() throws EmptyPlacesException {
-            emptyPlaces();
+        protected static String deleteObject(Set<? extends Place> places) throws EmptyPlacesException {
+            emptyPlaces(places);
             String message = "Выбранное место не найдено";
 
             System.out.print("Название места для удаления: ");
@@ -81,8 +68,8 @@ public abstract class Place {
             return message;
         }
         // TODO: проверить на корректность вывода в случае неверной команды
-        protected static String changeObject() throws EmptyPlacesException, EmptyStringException {
-            emptyPlaces();
+        protected static String changeObject(Set<? extends Place> places) throws EmptyPlacesException, EmptyStringException {
+            emptyPlaces(places);
             String message = "Выбранное место не найдено";
 
             System.out.println("""
@@ -107,20 +94,15 @@ public abstract class Place {
                 }
                 default -> {
                     System.out.println("Неверно заданная команда. Попробуйте еще раз");
-                    changeObject();
+                    changeObject(places);
                 }
             }
 
             return message;
         }
-        private static String callObject() throws EmptyPlacesException {
-            emptyPlaces();
-            return "вызвано";
-            // Сделать описание, что умеет объект
-        }
     }
 
-    protected static StringBuilder showObjects(){
+    protected static StringBuilder showObjects(Set<? extends Place> places){
         StringBuilder message = new StringBuilder();
         for (Place place : places)
             message.append(place.toString());
@@ -132,7 +114,7 @@ public abstract class Place {
         return "Место";
     };
 
-    protected static void emptyPlaces() throws EmptyPlacesException {
+    protected static void emptyPlaces(Set<? extends Place> places) throws EmptyPlacesException {
         if (places.size() == 0)
             throw new EmptyPlacesException("Удалять нечего - список пуст");
     }

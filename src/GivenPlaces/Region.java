@@ -1,6 +1,8 @@
 package GivenPlaces;
 
 import GivenPlaces.Utilits.CustomExceptions.EmptyPlacesException;
+import GivenPlaces.Utilits.CustomExceptions.EmptyStringException;
+import GivenPlaces.Utilits.CustomExceptions.NotExistingCommandException;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -16,9 +18,22 @@ public class Region extends Place {
         super(name, description);
     }
 
-    public static class RegionInteraction extends Interaction{
-        private static String callObject() throws EmptyPlacesException {
-            emptyPlaces();
+    public static class RegionInteraction extends Interaction {
+        public static void handleOption(String option) throws EmptyStringException, EmptyPlacesException, NotExistingCommandException {
+            System.out.println(
+                    switch (option) {
+                        case "Создать" -> createObject();
+                        case "Удалить" -> deleteObject(places);
+                        case "Изменить" -> changeObject(places);
+                        case "Вызвать" -> callObject();
+                        case "Показать" -> showObjects(places);
+                        default -> throw new NotExistingCommandException(
+                                String.format("Системная ошибка: команда \"%s\" не обрабатывается", option));
+                    }
+            );
+        }
+        public static String callObject() throws EmptyPlacesException {
+            emptyPlaces(places);
             return "call regionInteraction";
         }
     }
