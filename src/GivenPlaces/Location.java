@@ -3,6 +3,7 @@ package GivenPlaces;
 import GivenPlaces.Utilits.CustomExceptions.EmptyPlacesException;
 import GivenPlaces.Utilits.CustomExceptions.EmptyStringException;
 import GivenPlaces.Utilits.CustomExceptions.NotExistingCommandException;
+import GivenPlaces.Utilits.Interaction;
 import GivenPlaces.Utilits.InteractionOperations;
 import GivenPlaces.Utilits.Review;
 
@@ -12,9 +13,8 @@ import java.util.List;
 import java.util.Set;
 
 public class Location extends Place {
-//    private List<Review> reviews = new ArrayList<>();
-    private static Set<Location> places = new HashSet<>();
-
+    //private List<Review> reviews = new ArrayList<>();
+    private static final Set<Location> places = new HashSet<>();
 
     public Location(String name, String description){
         super(name, description);
@@ -34,13 +34,20 @@ public class Location extends Place {
                     }
             );
         }
+
+        public static String createObject() throws EmptyStringException {
+            String name = handleName();
+            places.add(new Location(name, handleDescription()));
+            return String.format("Новое место \"%s %s\" успешно добавлено", getPlaceType(), name);
+        }
+
         public static String callObject() throws EmptyPlacesException {
             emptyPlaces(places);
             return "call locationInteraction";
         }
     }
 
-    protected static void buildObject(String name, String description){
+    private static void buildObject(String name, String description){
         places.add(new Location(name, description));
     }
 

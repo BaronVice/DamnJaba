@@ -3,6 +3,7 @@ package GivenPlaces;
 import GivenPlaces.Utilits.CustomExceptions.EmptyPlacesException;
 import GivenPlaces.Utilits.CustomExceptions.EmptyStringException;
 import GivenPlaces.Utilits.CustomExceptions.NotExistingCommandException;
+import GivenPlaces.Utilits.Interaction;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -10,9 +11,9 @@ import java.util.List;
 import java.util.Set;
 
 public class Region extends Place {
-    private static Set<Region> places = new HashSet<>();
+    private static final Set<Region> places = new HashSet<>();
 
-    private List<City> cities = new ArrayList<>();
+    private Set<City> cities = new HashSet<>();
 
     public Region(String name, String description){
         super(name, description);
@@ -32,6 +33,13 @@ public class Region extends Place {
                     }
             );
         }
+
+        private static String createObject() throws EmptyStringException {
+            String name = handleName();
+            places.add(new Region(name, handleDescription()));
+            return String.format("Новое место \"%s %s\" успешно добавлено", getPlaceType(), name);
+        }
+
         public static String callObject() throws EmptyPlacesException {
             emptyPlaces(places);
             return "call regionInteraction";

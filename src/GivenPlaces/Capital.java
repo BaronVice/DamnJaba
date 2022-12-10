@@ -3,13 +3,14 @@ package GivenPlaces;
 import GivenPlaces.Utilits.CustomExceptions.EmptyPlacesException;
 import GivenPlaces.Utilits.CustomExceptions.EmptyStringException;
 import GivenPlaces.Utilits.CustomExceptions.NotExistingCommandException;
+import GivenPlaces.Utilits.Interaction;
 
 import java.security.cert.CertPath;
 import java.util.HashSet;
 import java.util.Set;
 
 public class Capital extends City {
-    private static Set<Capital> places = new HashSet<>();
+    private static final Set<Capital> places = new HashSet<>();
 
 
     public Capital(String name, String description){
@@ -30,7 +31,12 @@ public class Capital extends City {
                     }
             );
         }
-        public static String callObject() throws EmptyPlacesException {
+        private static String createObject() throws EmptyStringException {
+            String name = handleName();
+            places.add(new Capital(name, handleDescription()));
+            return String.format("Новое место \"%s %s\" успешно добавлено", getPlaceType(), name);
+        }
+        private static String callObject() throws EmptyPlacesException {
             emptyPlaces(places);
             return "call capitalInteraction";
         }

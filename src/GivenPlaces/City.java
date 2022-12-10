@@ -3,15 +3,15 @@ package GivenPlaces;
 import GivenPlaces.Utilits.CustomExceptions.EmptyPlacesException;
 import GivenPlaces.Utilits.CustomExceptions.EmptyStringException;
 import GivenPlaces.Utilits.CustomExceptions.NotExistingCommandException;
+import GivenPlaces.Utilits.Interaction;
 
 import java.util.HashSet;
 import java.util.Set;
 
 public class City extends Place {
-    private int population;
-    private double square;
-    private static Set<City> places = new HashSet<>();
-
+    protected int population;
+    protected double square;
+    private static final Set<City> places = new HashSet<>();
 
     public City(String name, String description){
         super(name, description);
@@ -31,7 +31,14 @@ public class City extends Place {
                     }
             );
         }
-        public static String callObject() throws EmptyPlacesException {
+
+        private static String createObject() throws EmptyStringException {
+            String name = handleName();
+            places.add(new City(name, handleDescription()));
+            return String.format("Новое место \"%s %s\" успешно добавлено", getPlaceType(), name);
+        }
+
+        private static String callObject() throws EmptyPlacesException {
             emptyPlaces(places);
             return "call cityInteraction";
         }

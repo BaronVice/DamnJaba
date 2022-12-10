@@ -24,6 +24,8 @@ public class Menu {
                 4. "Регион"
                 5. Назад
                 Выбор:\040""", option);
+        System.out.println();
+
         try {
             switch (inputChoice()) {
                 case "1" -> Location.LocationInteraction.handleOption(option);
@@ -44,14 +46,14 @@ public class Menu {
         if (goBack)
             mainMenu();
         else
-            inputChoice();
+            interactWithObject(option);
 
     }
 
 
     public static void mainMenu() throws NotExistingCommandException {
         System.out.print("""
-                
+
                 1. Создать объект
                 2. Удалить объект
                 3. Изменить объект
