@@ -1,8 +1,6 @@
 package GivenPlaces;
 
-import GivenPlaces.Utilits.CustomExceptions.EmptyPlacesException;
-import GivenPlaces.Utilits.CustomExceptions.EmptyStringException;
-import GivenPlaces.Utilits.CustomExceptions.NotExistingCommandException;
+import GivenPlaces.Utilits.CustomExceptions.*;
 import GivenPlaces.Utilits.Interaction;
 
 import java.util.HashSet;
@@ -42,10 +40,6 @@ public class City extends Place {
             emptyPlaces(places);
             return "call cityInteraction";
         }
-    }
-
-    public static void buildObject(String name, String description){
-        places.add(new City(name, description));
     }
 
     public static String getPlaceType() {

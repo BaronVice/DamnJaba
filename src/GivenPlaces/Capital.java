@@ -1,11 +1,8 @@
 package GivenPlaces;
 
-import GivenPlaces.Utilits.CustomExceptions.EmptyPlacesException;
-import GivenPlaces.Utilits.CustomExceptions.EmptyStringException;
-import GivenPlaces.Utilits.CustomExceptions.NotExistingCommandException;
+import GivenPlaces.Utilits.CustomExceptions.*;
 import GivenPlaces.Utilits.Interaction;
 
-import java.security.cert.CertPath;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -40,10 +37,6 @@ public class Capital extends City {
             emptyPlaces(places);
             return "call capitalInteraction";
         }
-    }
-
-    public static void buildObject(String name, String description){
-        Capital.places.add(new Capital(name, description));
     }
 
     public static String getPlaceType() {

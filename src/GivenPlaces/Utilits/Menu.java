@@ -7,7 +7,7 @@ import java.util.Scanner;
 
 public class Menu {
 
-    private static Scanner scan = new Scanner(System.in);
+    private static final Scanner scan = new Scanner(System.in);
 
     private static String inputChoice(){
         return scan.nextLine();

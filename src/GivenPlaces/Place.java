@@ -1,14 +1,6 @@
 package GivenPlaces;
 
 
-import GivenPlaces.Utilits.CustomExceptions.*;
-import GivenPlaces.Utilits.InteractionOperations;
-
-import java.util.Set;
-import java.util.HashSet;
-import java.util.Scanner;
-
-
 /* TODO: сделать проверки в сетерах: на непустые имена и описания, на парс в double
 *   Идеи: сделать базу с пользователями, комменатрии можно оставлять если пользователь существует,
 *   Можно использовать дату и время для отзыва
@@ -19,7 +11,6 @@ public abstract class Place {
     // Описание места
     protected String description;
     // Все существующие имена мест
-    protected static Scanner scan = new Scanner(System.in);
 
     public Place(String name, String description){
         this.name = name;
@@ -42,7 +33,7 @@ public abstract class Place {
         this.description = description;
     }
 
-    private static String getPlaceType(){
+    public static String getPlaceType(){
         return "Место";
     }
 

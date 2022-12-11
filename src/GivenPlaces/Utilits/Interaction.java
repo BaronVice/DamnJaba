@@ -1,9 +1,7 @@
 package GivenPlaces.Utilits;
 
 import GivenPlaces.Place;
-import GivenPlaces.Utilits.CustomExceptions.EmptyPlacesException;
-import GivenPlaces.Utilits.CustomExceptions.EmptyStringException;
-import GivenPlaces.Utilits.CustomExceptions.NotExistingCommandException;
+import GivenPlaces.Utilits.CustomExceptions.*;
 
 import java.util.Scanner;
 import java.util.Set;
@@ -78,7 +76,7 @@ public abstract class Interaction {
         for (Place place : places)
             if (place.getName().equals(toFind)) {
                 handleChange(place);
-                message = "Выбранное место успешно удалено";
+                message = "Выбранное место успешно изменено";
             }
 
 

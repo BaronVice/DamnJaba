@@ -1,19 +1,15 @@
 package GivenPlaces;
 
-import GivenPlaces.Utilits.CustomExceptions.EmptyPlacesException;
-import GivenPlaces.Utilits.CustomExceptions.EmptyStringException;
-import GivenPlaces.Utilits.CustomExceptions.NotExistingCommandException;
+import GivenPlaces.Utilits.CustomExceptions.*;
 import GivenPlaces.Utilits.Interaction;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 public class Region extends Place {
     private static final Set<Region> places = new HashSet<>();
 
-    private Set<City> cities = new HashSet<>();
+    private final Set<City> cities = new HashSet<>();
 
     public Region(String name, String description){
         super(name, description);
@@ -44,10 +40,6 @@ public class Region extends Place {
             emptyPlaces(places);
             return "call regionInteraction";
         }
-    }
-
-    public static void buildObject(String name, String description){
-        places.add(new Region(name, description));
     }
 
     public static String getPlaceType() {
