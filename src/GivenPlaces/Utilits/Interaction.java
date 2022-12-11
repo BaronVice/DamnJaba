@@ -39,10 +39,9 @@ public abstract class Interaction {
         System.out.printf("""
                 Текущее место:
                 %s
-                                    
                 1. Изменить имя
                 2. Изменить описание
-                Выбор:\040""", place.getName()
+                Выбор:\040""", place.toString()
         );
 
         switch (scan.nextLine()) {

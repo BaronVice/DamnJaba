@@ -6,16 +6,42 @@ import GivenPlaces.Utilits.Interaction;
 import java.util.HashSet;
 import java.util.Set;
 
+
 public class City extends Place {
     protected int population;
     protected double square;
+    protected String regionAttachment;
     private static final Set<City> places = new HashSet<>();
 
-    public City(String name, String description){
-        super(name, description);
+    public City(String name, String description, String regionAttachment){
+        this.name = name;
+        this.description = description;
+        this.regionAttachment = regionAttachment;
     }
 
     public static class CityInteraction extends Interaction {
+
+
+        protected static String handleCityToRegion(){
+
+            System.out.println("""
+                Город принадлежит региону?
+                1. Да
+                2. Нет
+                Выбор:\040"""
+            );
+            String choice = scan.nextLine();
+            if ("1".equals(choice)) {
+                return handleRegion();
+            }
+            else if ("2".equals(choice)) {
+                return "Не принадлежит какому-либо региону";
+            }
+            else {
+                System.out.println("Неверно заданная команда. Попробуйте еще раз");
+                return handleCityToRegion();
+            }
+        }
         public static void handleOption(String option) throws EmptyStringException, EmptyPlacesException, NotExistingCommandException {
             System.out.println(
                     switch (option) {
@@ -29,14 +55,14 @@ public class City extends Place {
                     }
             );
         }
-
-        private static String createObject() throws EmptyStringException {
-            String name = handleName();
-            places.add(new City(name, handleDescription()));
-            return String.format("Новое место \"%s %s\" успешно добавлено", getPlaceType(), name);
+        // TODO: возможно потребуется поменять с private на protected из-за handleDescription
+        protected static String createObject() throws EmptyStringException {
+            City createdCity = new City(handleName(), handleDescription(), handleCityToRegion());
+            places.add(createdCity);
+            return String.format("Новое место \"%s %s\" успешно добавлено", getPlaceType(), createdCity.getName());
         }
 
-        private static String callObject() throws EmptyPlacesException {
+        protected static String callObject() throws EmptyPlacesException {
             emptyPlaces(places);
             return "call cityInteraction";
         }
@@ -60,5 +86,9 @@ public class City extends Place {
     // Проверка на double и не ноль
     public void setSquare(double square) {
         this.square = square;
+    }
+
+    public String toString(){
+        return String.format("%s: %s\nОписание: %s\n", getPlaceType(), name, description);
     }
 }

@@ -6,12 +6,13 @@ import GivenPlaces.Utilits.Interaction;
 import java.util.HashSet;
 import java.util.Set;
 
+
+// TODO: Может здесь вообще все убрать и добавить лишь маленькую особенность?
 public class Capital extends City {
     private static final Set<Capital> places = new HashSet<>();
 
-
-    public Capital(String name, String description){
-        super(name, description);
+    public Capital(String name, String description, String regionAttachment){
+        super(name, description, regionAttachment);
     }
 
     public static class CapitalInteraction extends Interaction {
@@ -41,5 +42,9 @@ public class Capital extends City {
 
     public static String getPlaceType() {
         return "Столица";
+    }
+
+    public String toString(){
+        return String.format("%s: %s\nОписание: %s\n", getPlaceType(), name, description);
     }
 }

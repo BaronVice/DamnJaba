@@ -50,4 +50,8 @@ public class Location extends Place {
     public void addReview(){
         // Вызов добавления отзыва
     }
+
+    public String toString(){
+        return String.format("%s: %s\nОписание: %s\n", getPlaceType(), name, description);
+    }
 }

@@ -69,4 +69,7 @@ public class Region extends Place {
         return totalSquare;
     }
 
+    public String toString(){
+        return String.format("%s: %s\nОписание: %s\n", getPlaceType(), name, description);
+    }
 }

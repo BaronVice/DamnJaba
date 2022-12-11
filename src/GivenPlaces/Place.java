@@ -17,6 +17,9 @@ public abstract class Place {
         this.description = description;
     }
 
+    protected Place() {
+    }
+
     public String getName() {
         return name;
     }
@@ -33,12 +36,5 @@ public abstract class Place {
         this.description = description;
     }
 
-    public static String getPlaceType(){
-        return "Место";
-    }
-
-
-    public String toString(){
-        return String.format("%s: %s\nОписание: %s\n", getPlaceType(), name, description);
-    }
+    public abstract String toString();
 }
