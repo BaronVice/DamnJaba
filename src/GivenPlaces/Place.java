@@ -6,11 +6,8 @@ package GivenPlaces;
 *   Можно использовать дату и время для отзыва
 *         */
 public abstract class Place {
-    // Имя места
     protected String name;
-    // Описание места
     protected String description;
-    // Все существующие имена мест
 
     public Place(String name, String description){
         this.name = name;
