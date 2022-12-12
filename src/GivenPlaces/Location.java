@@ -17,6 +17,10 @@ public class Location extends Place {
         super(name, description);
     }
 
+    public static String getPlaceType() {
+        return "Локация";
+    }
+
     public static class LocationInteraction extends Interaction {
         public static void handleOption(String option) throws EmptyStringException, EmptyPlacesException, NotExistingCommandException {
             System.out.println(
@@ -32,21 +36,18 @@ public class Location extends Place {
             );
         }
 
-        public static String createObject() throws EmptyStringException {
+        private static String createObject() throws EmptyStringException {
             String name = handleName();
             places.add(new Location(name, handleDescription()));
             return String.format("Новое место \"%s %s\" успешно добавлено", getPlaceType(), name);
         }
 
-        public static String callObject() throws EmptyPlacesException {
+        private static String callObject() throws EmptyPlacesException {
             emptyPlaces(places);
             return "call locationInteraction";
         }
     }
 
-    public static String getPlaceType() {
-        return "Локация";
-    }
     public void addReview(){
         // Вызов добавления отзыва
     }

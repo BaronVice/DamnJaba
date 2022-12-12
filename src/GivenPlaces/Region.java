@@ -15,6 +15,14 @@ public class Region extends Place {
         super(name, description);
     }
 
+    public static Set<Region> getRegions(){
+        return places;
+    }
+
+    public static String getPlaceType() {
+        return "Регион";
+    }
+
     public static class RegionInteraction extends Interaction {
         public static void handleOption(String option) throws EmptyStringException, EmptyPlacesException, NotExistingCommandException {
             System.out.println(
@@ -36,14 +44,10 @@ public class Region extends Place {
             return String.format("Новое место \"%s %s\" успешно добавлено", getPlaceType(), name);
         }
 
-        public static String callObject() throws EmptyPlacesException {
+        private static String callObject() throws EmptyPlacesException {
             emptyPlaces(places);
             return "call regionInteraction";
         }
-    }
-
-    public static String getPlaceType() {
-        return "Регион";
     }
 
     public void addCityToRegion(City city){

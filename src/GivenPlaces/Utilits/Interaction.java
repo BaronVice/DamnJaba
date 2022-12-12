@@ -8,6 +8,17 @@ import java.util.Set;
 
 public abstract class Interaction {
     protected static Scanner scan = new Scanner(System.in);
+    private static String toHandle;
+
+    public static String capitalize(String name){
+        toHandle = name.trim();
+        return toHandle.substring(0, 1).toUpperCase() + toHandle.substring(1);
+    }
+    // TODO: будет здорово если научить его выкидывать объект типа Place, а не boolean
+    public static boolean existsInSet(Set<? extends Place> places, String name){
+        toHandle = name.trim().toLowerCase();
+        return places.stream().anyMatch(place -> place.getName().toLowerCase().equals(toHandle));
+    }
 
     protected static void emptyPlaces(Set<? extends Place> places) throws EmptyPlacesException {
         if (places.size() == 0)
@@ -20,8 +31,8 @@ public abstract class Interaction {
 
         if (name.isEmpty())
             throw new EmptyStringException("название не может быть пустым");
-        name = name.substring(0, 1).toUpperCase() + name.substring(1);
 
+        name = capitalize(name);
         return name;
     }
 
@@ -32,6 +43,7 @@ public abstract class Interaction {
         if (description.isEmpty())
             description = "Описание отсутствует";
 
+        description = capitalize(description);
         return description;
     }
 
@@ -59,8 +71,8 @@ public abstract class Interaction {
         String message = "Выбранное место не найдено";
 
         System.out.print("Название места для удаления: ");
-        String toFind = scan.nextLine();
-        if (places.removeIf(place -> place.getName().equals(toFind)))
+        String toFind = scan.nextLine().toLowerCase();
+        if (places.removeIf(place -> place.getName().toLowerCase().equals(toFind)))
             message = "Выбранное место успешно удалено";
 
         return message;
@@ -71,13 +83,13 @@ public abstract class Interaction {
         String message = "Выбранное место не найдено";
 
         System.out.print("Название места для изменения: ");
-        String toFind = scan.nextLine();
+        String toFind = scan.nextLine().toLowerCase();
+        // TODO: вот для этого
         for (Place place : places)
-            if (place.getName().equals(toFind)) {
+            if (place.getName().toLowerCase().equals(toFind)) {
                 handleChange(place);
                 message = "Выбранное место успешно изменено";
             }
-
 
         return message;
     }
