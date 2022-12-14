@@ -3,19 +3,20 @@ package GivenPlaces;
 import GivenPlaces.Utilits.CustomExceptions.*;
 import GivenPlaces.Utilits.Interaction;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
 public class Region extends Place {
-    private static final Set<Region> places = new HashSet<>();
+    private static final HashMap<String, Region> places = new HashMap<>();
 
-    private final Set<City> cities = new HashSet<>();
+    private final HashMap<String, City> cities = new HashMap<>();
 
     public Region(String name, String description){
         super(name, description);
     }
 
-    public static Set<Region> getRegions(){
+    public static HashMap<String, Region> getRegions(){
         return places;
     }
 
@@ -40,38 +41,38 @@ public class Region extends Place {
 
         private static String createObject() throws EmptyStringException {
             String name = handleName();
-            places.add(new Region(name, handleDescription()));
+            places.put(name, new Region(name, handleDescription()));
             return String.format("Новое место \"%s %s\" успешно добавлено", getPlaceType(), name);
         }
 
         private static String callObject() throws EmptyPlacesException {
             emptyPlaces(places);
-            return "call regionInteraction";
+            System.out.print("Название места для взаимодействия: ");
+            Region chosen;
+
+            return "Juj";
         }
     }
 
     public static Region getRegion(City city){
-        for (Region region : places)
-            if (region.getName().equals(city.getRegionAttachment()))
-                return region;
-
-        return null;
+        return places.get(city.getRegionAttachment());
     }
 
     public static void attachCityToRegion(City city){
         getRegion(city).addCityToRegion(city);
     }
+    public static void unattachCityFrom(City city) {getRegion(city).removeCityFromRegion(city);}
 
     public void addCityToRegion(City city){
-        cities.add(city);
+        cities.put(city.getName(), city);
     }
     public void removeCityFromRegion(City city){
-        cities.remove(city);
+        cities.remove(city.getName());
     }
 
     public int calculatePopulation(){
         int totalPopulation = 0;
-        for (City city : cities)
+        for (City city : cities.values())
             totalPopulation += city.getPopulation();
 
         return totalPopulation;

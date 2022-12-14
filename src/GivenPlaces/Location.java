@@ -2,16 +2,11 @@ package GivenPlaces;
 
 import GivenPlaces.Utilits.CustomExceptions.*;
 import GivenPlaces.Utilits.Interaction;
-import GivenPlaces.Utilits.Review;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class Location extends Place {
-    private final List<Review> reviews = new ArrayList<>();
-    private static final Set<Location> places = new HashSet<>();
+    private static final HashMap<String, Location> places = new HashMap<>();
 
     public Location(String name, String description){
         super(name, description);
@@ -20,6 +15,7 @@ public class Location extends Place {
     public static String getPlaceType() {
         return "Локация";
     }
+
 
     public static class LocationInteraction extends Interaction {
         public static void handleOption(String option) throws EmptyStringException, EmptyPlacesException, NotExistingCommandException {
@@ -38,7 +34,7 @@ public class Location extends Place {
 
         private static String createObject() throws EmptyStringException {
             String name = handleName();
-            places.add(new Location(name, handleDescription()));
+            places.put(name, new Location(name, handleDescription()));
             return String.format("Новое место \"%s %s\" успешно добавлено", getPlaceType(), name);
         }
 

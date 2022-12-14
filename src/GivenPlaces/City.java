@@ -3,6 +3,7 @@ package GivenPlaces;
 import GivenPlaces.Utilits.CustomExceptions.*;
 import GivenPlaces.Utilits.Interaction;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.InputMismatchException;
 import java.util.Set;
@@ -12,13 +13,16 @@ import java.util.stream.Collectors;
 public class City extends Place {
     protected int population;
     protected String regionAttachment;
-    private static final Set<City> places = new HashSet<>();
+    private static final HashMap<String, City> places = new HashMap<>();
 
     public City(String name, int population, String description, String regionAttachment){
         this.name = name;
         this.population = population;
         this.description = description;
         this.regionAttachment = regionAttachment;
+    }
+    public static HashMap<String, City> getCities(){
+        return places;
     }
 
     public static String getPlaceType() {
@@ -28,7 +32,7 @@ public class City extends Place {
     public int getPopulation() {
         return population;
     }
-    // Проверка на int и не ноль
+
     public void setPopulation(int population) {
         this.population = population;
     }
@@ -44,12 +48,12 @@ public class City extends Place {
     public static class CityInteraction extends Interaction {
 
         protected static int handlePopulation(){
-            System.out.println("Население: ");
+            System.out.print("Население: ");
             try {
                 int population = scan.nextInt();
-                if (population < 1){
+                if (population < 1)
                     throw new NegativePopulationException();
-                }
+
                 return population;
             }
             catch (InputMismatchException | NegativePopulationException e){
@@ -60,11 +64,11 @@ public class City extends Place {
         protected static String handleRegion(){
             System.out.printf("""
                     Доступные регионы: %s
-                    Название региона, которому принадлежит город:\040
-                    """, Region.getRegions().stream().map(Place::getName).collect(Collectors.joining(", ")));
+                    Название региона, которому принадлежит город:\040""",
+                    String.join(", ", Region.getRegions().keySet()));
 
             String regionName = scan.nextLine();
-            if (existsInSet(Region.getRegions(), regionName))
+            if (Region.getRegions().containsKey(regionName))
                 return regionName;
             else{
                 System.out.println("Регион не найден. Выберите из списка доступных регионов");
@@ -112,11 +116,15 @@ public class City extends Place {
         }
         protected static String createObject() throws EmptyStringException {
             City createdCity = new City(handleName(), handlePopulation(), handleDescription(), handleCityToRegion());
+
             if (!createdCity.getRegionAttachment().equals("Не принадлежит какому-либо региону"))
                 Region.attachCityToRegion(createdCity);
-            places.add(createdCity);
+
+            places.put(createdCity.getName(), createdCity);
             return String.format("Новое место \"%s %s\" успешно добавлено", getPlaceType(), createdCity.getName());
         }
+        // Здесь также нужно удалять и из регионов
+        // protected static String deleteObject(<? extends Place> places) throws EmptyPlacesException {}
 
         protected static String callObject() throws EmptyPlacesException {
             emptyPlaces(places);

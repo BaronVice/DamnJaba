@@ -9,6 +9,7 @@ import java.util.Set;
 
 // TODO: Может здесь вообще все убрать и добавить лишь маленькую особенность?
 public class Capital extends City {
+
     private final boolean isCapital = true;
 
     public Capital(String name, int population, String description, String regionAttachment){

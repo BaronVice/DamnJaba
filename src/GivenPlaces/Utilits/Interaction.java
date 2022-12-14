@@ -1,8 +1,10 @@
 package GivenPlaces.Utilits;
 
+import GivenPlaces.Location;
 import GivenPlaces.Place;
 import GivenPlaces.Utilits.CustomExceptions.*;
 
+import java.util.HashMap;
 import java.util.Scanner;
 import java.util.Set;
 
@@ -14,13 +16,8 @@ public abstract class Interaction {
         toHandle = name.trim();
         return toHandle.substring(0, 1).toUpperCase() + toHandle.substring(1);
     }
-    // TODO: будет здорово если научить его выкидывать объект типа Place, а не boolean
-    public static boolean existsInSet(Set<? extends Place> places, String name){
-        toHandle = name.trim().toLowerCase();
-        return places.stream().anyMatch(place -> place.getName().toLowerCase().equals(toHandle));
-    }
 
-    protected static void emptyPlaces(Set<? extends Place> places) throws EmptyPlacesException {
+    protected static void emptyPlaces(HashMap<String, ? extends Place> places) throws EmptyPlacesException {
         if (places.size() == 0)
             throw new EmptyPlacesException("Удалять нечего - список пуст");
     }
@@ -66,38 +63,39 @@ public abstract class Interaction {
         }
     }
 
-    protected static String deleteObject(Set<? extends Place> places) throws EmptyPlacesException {
+    protected static String deleteObject(HashMap<String, ? extends Place> places) throws EmptyPlacesException {
         emptyPlaces(places);
         String message = "Выбранное место не найдено";
 
         System.out.print("Название места для удаления: ");
-        String toFind = scan.nextLine().toLowerCase();
-        if (places.removeIf(place -> place.getName().toLowerCase().equals(toFind)))
+        toHandle = scan.nextLine().toLowerCase();
+        if (places.containsKey(toHandle)){
+            places.remove(toHandle);
             message = "Выбранное место успешно удалено";
+        }
 
         return message;
     }
 
-    protected static String changeObject(Set<? extends Place> places) throws EmptyPlacesException, EmptyStringException {
+    protected static String changeObject(HashMap<String, ? extends Place> places) throws EmptyPlacesException, EmptyStringException {
         emptyPlaces(places);
         String message = "Выбранное место не найдено";
 
         System.out.print("Название места для изменения: ");
-        String toFind = scan.nextLine().toLowerCase();
-        // TODO: вот для этого
-        for (Place place : places)
-            if (place.getName().toLowerCase().equals(toFind)) {
-                handleChange(place);
-                message = "Выбранное место успешно изменено";
-            }
+        toHandle = scan.nextLine().toLowerCase();
+
+        if (places.containsKey(toHandle)){
+            handleChange(places.get(toHandle));
+            message = "Выбранное место успешно изменено";
+        }
 
         return message;
     }
 
-    protected static StringBuilder showObjects(Set<? extends Place> places) throws EmptyPlacesException {
+    protected static StringBuilder showObjects(HashMap<String, ? extends Place> places) throws EmptyPlacesException {
         emptyPlaces(places);
         StringBuilder message = new StringBuilder();
-        for (Place place : places)
+        for (Place place : places.values())
             message.append(place.toString());
 
         return message;

@@ -1,11 +1,13 @@
 package GivenPlaces;
 
 
+import java.io.Serializable;
+
 /* TODO: сделать проверки в сетерах: на непустые имена и описания, на парс в double
 *   Идеи: сделать базу с пользователями, комменатрии можно оставлять если пользователь существует,
 *   Можно использовать дату и время для отзыва
 *         */
-public abstract class Place {
+public abstract class Place implements Serializable {
     protected String name;
     protected String description;
 
