@@ -4,8 +4,6 @@ import GivenPlaces.Utilits.CustomExceptions.*;
 import GivenPlaces.Utilits.Interaction;
 
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
 
 public class Region extends Place {
     private static final HashMap<String, Region> places = new HashMap<>();

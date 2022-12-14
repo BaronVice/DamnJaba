@@ -4,10 +4,7 @@ import GivenPlaces.Utilits.CustomExceptions.*;
 import GivenPlaces.Utilits.Interaction;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.InputMismatchException;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 
 public class City extends Place {

@@ -1,11 +1,5 @@
 package GivenPlaces;
 
-import GivenPlaces.Utilits.CustomExceptions.*;
-import GivenPlaces.Utilits.Interaction;
-
-import java.util.HashSet;
-import java.util.Set;
-
 
 // TODO: Может здесь вообще все убрать и добавить лишь маленькую особенность?
 public class Capital extends City {
