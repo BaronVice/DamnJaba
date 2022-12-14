@@ -50,6 +50,18 @@ public class Region extends Place {
         }
     }
 
+    public static Region getRegion(City city){
+        for (Region region : places)
+            if (region.getName().equals(city.getRegionAttachment()))
+                return region;
+
+        return null;
+    }
+
+    public static void attachCityToRegion(City city){
+        getRegion(city).addCityToRegion(city);
+    }
+
     public void addCityToRegion(City city){
         cities.add(city);
     }
@@ -63,14 +75,6 @@ public class Region extends Place {
             totalPopulation += city.getPopulation();
 
         return totalPopulation;
-    }
-
-    public int calculateSquare(){
-        int totalSquare = 0;
-        for (City city : cities)
-            totalSquare += city.getSquare();
-
-        return totalSquare;
     }
 
     public String toString(){

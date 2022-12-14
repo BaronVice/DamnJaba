@@ -4,18 +4,19 @@ import GivenPlaces.Utilits.CustomExceptions.*;
 import GivenPlaces.Utilits.Interaction;
 
 import java.util.HashSet;
+import java.util.InputMismatchException;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 
 public class City extends Place {
     protected int population;
-    protected double square;
     protected String regionAttachment;
     private static final Set<City> places = new HashSet<>();
 
-    public City(String name, String description, String regionAttachment){
+    public City(String name, int population, String description, String regionAttachment){
         this.name = name;
+        this.population = population;
         this.description = description;
         this.regionAttachment = regionAttachment;
     }
@@ -32,15 +33,30 @@ public class City extends Place {
         this.population = population;
     }
 
-    public double getSquare() {
-        return square;
+    public String getRegionAttachment(){
+        return regionAttachment;
     }
-    // Проверка на double и не ноль
-    public void setSquare(double square) {
-        this.square = square;
+    public void setRegionAttachment(String regionAttachment){
+        this.regionAttachment = regionAttachment;
     }
 
+
     public static class CityInteraction extends Interaction {
+
+        protected static int handlePopulation(){
+            System.out.println("Население: ");
+            try {
+                int population = scan.nextInt();
+                if (population < 1){
+                    throw new NegativePopulationException();
+                }
+                return population;
+            }
+            catch (InputMismatchException | NegativePopulationException e){
+                System.out.println("Население должно быть целым числом больше 0");
+                return handlePopulation();
+            }
+        }
         protected static String handleRegion(){
             System.out.printf("""
                     Доступные регионы: %s
@@ -94,9 +110,10 @@ public class City extends Place {
                     }
             );
         }
-        // TODO: возможно потребуется поменять с private на protected из-за handleDescription
         protected static String createObject() throws EmptyStringException {
-            City createdCity = new City(handleName(), handleDescription(), handleCityToRegion());
+            City createdCity = new City(handleName(), handlePopulation(), handleDescription(), handleCityToRegion());
+            if (!createdCity.getRegionAttachment().equals("Не принадлежит какому-либо региону"))
+                Region.attachCityToRegion(createdCity);
             places.add(createdCity);
             return String.format("Новое место \"%s %s\" успешно добавлено", getPlaceType(), createdCity.getName());
         }

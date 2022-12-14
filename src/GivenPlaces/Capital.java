@@ -11,8 +11,12 @@ import java.util.Set;
 public class Capital extends City {
     private final boolean isCapital = true;
 
-    public Capital(String name, String description, String regionAttachment){
-        super(name, description, regionAttachment);
+    public Capital(String name, int population, String description, String regionAttachment){
+        super(name, population, description, regionAttachment);
+    }
+
+    public static class CapitalInteraction extends CityInteraction {
+
     }
 
     public static String getPlaceType() {

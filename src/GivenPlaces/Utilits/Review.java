@@ -1,6 +1,7 @@
 package GivenPlaces.Utilits;
 
-public class Review {
+// Будет реализован в бета версии
+public abstract class Review {
 
     private String userName;
     private int mark;

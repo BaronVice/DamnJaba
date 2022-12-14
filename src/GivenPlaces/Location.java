@@ -44,12 +44,9 @@ public class Location extends Place {
 
         private static String callObject() throws EmptyPlacesException {
             emptyPlaces(places);
-            return "call locationInteraction";
+            // TODO: обработать имя, вывести возможные действия
+            return "Juj";
         }
-    }
-
-    public void addReview(){
-        // Вызов добавления отзыва
     }
 
     public String toString(){
