@@ -25,10 +25,12 @@ public class Menu {
                 4. "Регион"
                 5. Назад
                 Выбор:\040""", option);
-        System.out.println();
 
         try {
-            switch (inputChoice()) {
+            String choice = inputChoice();
+            System.out.println();
+
+            switch (choice) {
                 case "1" -> Location.LocationInteraction.handleOption(option);
                 case "2" -> City.CityInteraction.handleOption(option);
                 case "3" -> Capital.CapitalInteraction.handleOption(option);
@@ -58,18 +60,16 @@ public class Menu {
                 1. Создать объект
                 2. Удалить объект
                 3. Изменить объект
-                4. Взаимодействие с объектом
-                5. Посмотреть все существующие объекты
-                6. Выход
+                4. Посмотреть все существующие объекты
+                5. Выход
                 Выбор:\040""");
 
         switch (inputChoice()) {
             case "1" -> interactWithObject("Создать");
             case "2" -> interactWithObject("Удалить");
             case "3" -> interactWithObject("Изменить");
-            case "4" -> interactWithObject("Вызвать");
-            case "5" -> interactWithObject("Показать");
-            case "6" -> System.exit(0);
+            case "4" -> interactWithObject("Показать");
+            case "5" -> System.exit(0);
             default -> System.out.println("Неверно заданная команда. Попробуйте еще раз");
         }
 

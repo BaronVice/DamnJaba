@@ -24,7 +24,6 @@ public class Location extends Place {
                         case "Создать" -> createObject();
                         case "Удалить" -> deleteObject(places);
                         case "Изменить" -> changeObject(places);
-                        case "Вызвать" -> callObject();
                         case "Показать" -> showObjects(places);
                         default -> throw new NotExistingCommandException(
                                 String.format("Системная ошибка: команда \"%s\" не обрабатывается", option));
@@ -36,12 +35,6 @@ public class Location extends Place {
             String name = handleName();
             places.put(name, new Location(name, handleDescription()));
             return String.format("Новое место \"%s %s\" успешно добавлено", getPlaceType(), name);
-        }
-
-        private static String callObject() throws EmptyPlacesException {
-            emptyPlaces(places);
-            // TODO: обработать имя, вывести возможные действия
-            return "Juj";
         }
     }
 

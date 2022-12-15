@@ -43,7 +43,6 @@ public class City extends Place {
 
 
     public static class CityInteraction extends Interaction {
-
         protected static int handlePopulation(){
             System.out.print("Население: ");
             try {
@@ -55,6 +54,7 @@ public class City extends Place {
             }
             catch (InputMismatchException | NegativePopulationException e){
                 System.out.println("Население должно быть целым числом больше 0");
+                scan.next();
                 return handlePopulation();
             }
         }
@@ -102,9 +102,8 @@ public class City extends Place {
             System.out.println(
                     switch (option) {
                         case "Создать" -> createObject();
-                        case "Удалить" -> deleteObject(places);
+                        case "Удалить" -> deleteCity();
                         case "Изменить" -> changeObject(places);
-                        case "Вызвать" -> callObject();
                         case "Показать" -> showObjects(places);
                         default -> throw new NotExistingCommandException(
                                 String.format("Системная ошибка: команда \"%s\" не обрабатывается", option));
@@ -120,16 +119,26 @@ public class City extends Place {
             places.put(createdCity.getName(), createdCity);
             return String.format("Новое место \"%s %s\" успешно добавлено", getPlaceType(), createdCity.getName());
         }
-        // Здесь также нужно удалять и из регионов
-        // protected static String deleteObject(<? extends Place> places) throws EmptyPlacesException {}
 
-        protected static String callObject() throws EmptyPlacesException {
+        protected static String deleteCity() throws EmptyPlacesException {
             emptyPlaces(places);
-            return "call cityInteraction";
+            String message = "Выбранное место не найдено";
+
+            System.out.print("Название места для удаления: ");
+            String name = scan.nextLine().toLowerCase();
+
+            if (places.containsKey(name)) {
+                Region.unattachCityFrom(places.get(name));
+                places.remove(name);
+                message = "Выбранное место успешно удалено";
+            }
+
+            return message;
         }
+
     }
 
     public String toString(){
-        return String.format("%s: %s\nОписание: %s\nРегион: %s\n", getPlaceType(), name, description, regionAttachment);
+        return String.format("%s: %s\nНаселение: %d\nОписание: %s\nРегион: %s\n", getPlaceType(), name, population, description, regionAttachment);
     }
 }

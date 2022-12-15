@@ -17,6 +17,9 @@ public class Region extends Place {
     public static HashMap<String, Region> getRegions(){
         return places;
     }
+    public HashMap<String, City> getCities(){
+        return cities;
+    }
 
     public static String getPlaceType() {
         return "Регион";
@@ -29,7 +32,6 @@ public class Region extends Place {
                         case "Создать" -> createObject();
                         case "Удалить" -> deleteObject(places);
                         case "Изменить" -> changeObject(places);
-                        case "Вызвать" -> callObject();
                         case "Показать" -> showObjects(places);
                         default -> throw new NotExistingCommandException(
                                 String.format("Системная ошибка: команда \"%s\" не обрабатывается", option));
@@ -41,14 +43,6 @@ public class Region extends Place {
             String name = handleName();
             places.put(name, new Region(name, handleDescription()));
             return String.format("Новое место \"%s %s\" успешно добавлено", getPlaceType(), name);
-        }
-
-        private static String callObject() throws EmptyPlacesException {
-            emptyPlaces(places);
-            System.out.print("Название места для взаимодействия: ");
-            Region chosen;
-
-            return "Juj";
         }
     }
 
