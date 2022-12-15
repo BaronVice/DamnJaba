@@ -9,8 +9,11 @@ import java.util.Scanner;
 
 
 public class City extends Place {
+    // Население
     protected int population;
+    // Принадлежность к региону
     protected String regionAttachment;
+    // Существующие города
     private static final HashMap<String, City> places = new HashMap<>();
 
     public City(String name, int population, String description, String regionAttachment){
@@ -19,25 +22,23 @@ public class City extends Place {
         this.description = description;
         this.regionAttachment = regionAttachment;
     }
-    public static HashMap<String, City> getCities(){
-        return places;
-    }
-
     public static String getPlaceType() {
         return "Город";
     }
-
+    public static HashMap<String, City> getCities(){
+        return places;
+    }
     public int getPopulation() {
         return population;
     }
-
     public void setPopulation(int population) {
         this.population = population;
     }
-
     public String getRegionAttachment(){
+        // Если регион еще существует, то все хорошо
         if (Region.getRegions().containsKey(regionAttachment))
             return regionAttachment;
+        // Иначе регион удален и у города нету принадлежности региону
         else
             return regionAttachment = "Не принадлежит какому-либо региону";
     }
@@ -47,6 +48,7 @@ public class City extends Place {
 
 
     public static class CityInteraction extends Interaction {
+        // Задаем население и проверяем, что оно целое число больше 0
         protected static int handlePopulation(){
             Scanner scan = new Scanner(System.in);
 
@@ -63,6 +65,8 @@ public class City extends Place {
                 return handlePopulation();
             }
         }
+
+        // Прикрепляем город к региону
         protected static String handleRegion(){
             System.out.printf("""
                     Доступные регионы: %s
@@ -77,7 +81,10 @@ public class City extends Place {
                 return handleCityToRegion();
             }
         }
+
+        // Хотим ли прикреплять город к региону
         protected static String handleCityToRegion(){
+            // Это возможно, если существует хотя бы один регион
             try{
                 emptyPlaces(Region.getRegions());
             }
@@ -104,6 +111,7 @@ public class City extends Place {
                 return handleCityToRegion();
             }
         }
+
         public static void handleOption(String option) throws EmptyStringException, EmptyPlacesException, NotExistingCommandException {
             System.out.println(
                     switch (option) {
@@ -116,6 +124,7 @@ public class City extends Place {
                     }
             );
         }
+
         private static String createObject() throws EmptyStringException {
             City createdCity = new City(handleName(), handlePopulation(), handleDescription(), handleCityToRegion());
 
@@ -140,7 +149,6 @@ public class City extends Place {
 
             return message;
         }
-
     }
 
     public static void showChangeOptions(){
@@ -163,6 +171,7 @@ public class City extends Place {
             case "2" -> setPopulation(CityInteraction.handlePopulation());
             case "3" -> setDescription(Interaction.handleDescription());
             case "4" -> {
+                // Сперва открепим город от текущего региона, затем запросим новый
                 Region.unattachCityFrom(places.get(name));
                 setRegionAttachment(CityInteraction.handleCityToRegion());
             }

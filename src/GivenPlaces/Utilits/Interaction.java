@@ -11,20 +11,21 @@ public abstract class Interaction {
     protected static Scanner scan = new Scanner(System.in);
     private static String toHandle;
 
+    // Форматирование для лучшего поиска: удаляем лишние пробелы слева и справа, переводим все символы в нижний регистр
     public static String capitalize(String name){
         toHandle = name.trim();
         return toHandle.substring(0, 1).toUpperCase() + toHandle.substring(1);
     }
-
+    // Проверка на пустой список класса, если хотим как-то с ним взаимодействовать
     public static void emptyPlaces(HashMap<String, ? extends Place> places) throws EmptyPlacesException {
         if (places.size() == 0)
             throw new EmptyPlacesException("Удалять нечего - список пуст");
     }
-
+    // Покажет все названия объектов, что находятся в списке заданного класса
     public static String showNames(HashMap<String, ? extends Place> places){
         return String.join(", ", places.keySet());
     }
-
+    // Обработает имя объекта
     public static String handleName() throws EmptyStringException {
         System.out.print("Название: ");
         String name = scan.nextLine().trim();
@@ -35,7 +36,7 @@ public abstract class Interaction {
         name = capitalize(name);
         return name;
     }
-
+    // Обработает описание объекта
     public static String handleDescription() {
         System.out.print("Описание: ");
         String description = scan.nextLine().trim();
@@ -46,7 +47,7 @@ public abstract class Interaction {
         description = capitalize(description);
         return description;
     }
-
+    // Удаление объекта
     protected static String deleteObject(HashMap<String, ? extends Place> places) throws EmptyPlacesException {
         emptyPlaces(places);
         String message = "Выбранное место не найдено";
@@ -63,6 +64,7 @@ public abstract class Interaction {
         return message;
     }
 
+    // Поменяет характеристики объекта
     protected static String changeObject(HashMap<String, ? extends Place> places) throws EmptyPlacesException, EmptyStringException {
         emptyPlaces(places);
         String message = "Выбранное место не найдено";
@@ -72,6 +74,7 @@ public abstract class Interaction {
         toHandle = capitalize(scan.nextLine().toLowerCase());
 
         if (places.containsKey(toHandle)){
+            // У каждого объекта есть уникальные поля, поэтому у каждого можно менять что-то свое
             places.get(toHandle).handleChange();
             message = "Выбранное место успешно изменено";
         }
@@ -79,6 +82,7 @@ public abstract class Interaction {
         return message;
     }
 
+    // Пробует вызвать заданное место
     protected static String showChosenObject(HashMap<String, ? extends Place> places){
 
         System.out.printf("Возможно вызвать: %s\n", showNames(places));
@@ -94,6 +98,7 @@ public abstract class Interaction {
         }
 
     }
+    // Для вывода объектов (используется .toString() для каждого объекта)
     protected static String showObjects(HashMap<String, ? extends Place> places) throws EmptyPlacesException {
         emptyPlaces(places);
 
@@ -106,7 +111,9 @@ public abstract class Interaction {
 
         String message;
         switch (scan.nextLine()) {
+            // Собираем в сообщение все результаты .toString() обеъктов из заданного списка
             case "1" -> message = places.values().stream().map(Place::toString).collect(Collectors.joining("\n"));
+            // Выбираем лишь отдельный объект для вывода
             case "2" -> message = showChosenObject(places);
             default -> {
                 System.out.println("Неверно заданная команда. Попробуйте еще раз");

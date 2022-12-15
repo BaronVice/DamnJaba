@@ -6,8 +6,10 @@ import GivenPlaces.Utilits.Interaction;
 import java.util.*;
 
 public class Location extends Place {
+    // Будем хранить созданные объекты в словарях, чтобы по имени быстро получить доступ
     private static final HashMap<String, Location> places = new HashMap<>();
 
+    // Передаем в конструктор родителя
     public Location(String name, String description){
         super(name, description);
     }
@@ -29,7 +31,7 @@ public class Location extends Place {
                     }
             );
         }
-
+        // Пробуем создать объект
         private static String createObject() throws EmptyStringException {
             String name = handleName();
             places.put(name, new Location(name, handleDescription()));
@@ -37,6 +39,7 @@ public class Location extends Place {
         }
     }
 
+    // Какие изменения могут быть применены
     public static void showChangeOptions(){
         System.out.print("""
                 Изменить:
@@ -45,6 +48,8 @@ public class Location extends Place {
                 Выбор:\040"""
         );
     }
+
+    // А здесь задаем изменения
     public void handleChange() throws EmptyStringException {
         Scanner scan = new Scanner(System.in);
 

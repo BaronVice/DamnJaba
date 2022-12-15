@@ -8,7 +8,7 @@ import java.util.Scanner;
 
 public class Region extends Place {
     private static final HashMap<String, Region> places = new HashMap<>();
-
+    // За каждым регионом закреплен список городов
     private final HashMap<String, City> cities = new HashMap<>();
 
     public Region(String name, String description){
@@ -27,7 +27,7 @@ public class Region extends Place {
     }
 
     public static class RegionInteraction extends Interaction {
-
+        // Если поменяли имя региона, то даем его городам знать, что имя региона поменялось
         public static String handleRegionName(HashMap<String, City> regionCities) throws  EmptyStringException {
             String newName = handleName();
             for (City city : regionCities.values())
@@ -78,15 +78,20 @@ public class Region extends Place {
         }
     }
 
+    // Нужен, чтобы вытащить регион, которому принадлежит город
     public static Region getRegion(City city){
         return places.get(city.getRegionAttachment());
     }
 
+    // Для прикрепления города к региону
     public static void attachCityToRegion(City city){
+        // Если уже сказали, что у города нет региона, то от нас не требуют его прикреплять
         if (!city.getRegionAttachment().equals("Не принадлежит какому-либо региону"))
             getRegion(city).addCityToRegion(city);
     }
+    //
     public static void unattachCityFrom(City city) {
+        // Если не нашли заданный регион, то ничего откреплять не надо
         if (getRegion(city) != null)
             getRegion(city).removeCityFromRegion(city);
     }
@@ -98,6 +103,7 @@ public class Region extends Place {
         cities.remove(city.getName());
     }
 
+    // Исходя из городов региона, можно посчитать его население
     public int calculatePopulation(){
         int totalPopulation = 0;
         for (City city : cities.values())

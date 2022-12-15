@@ -6,7 +6,7 @@ import GivenPlaces.Utilits.CustomExceptions.*;
 import java.io.Serializable;
 
 
-public abstract class Place implements Serializable {
+public abstract class Place {
     protected String name;
     protected String description;
 
@@ -34,7 +34,9 @@ public abstract class Place implements Serializable {
         this.description = description;
     }
 
+    // У каждого наследника будут свои возможности для изменения
     public abstract void handleChange() throws EmptyStringException;
 
+    // И описание тоже
     public abstract String toString();
 }

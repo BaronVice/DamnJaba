@@ -5,7 +5,7 @@ import GivenPlaces.Utilits.CustomExceptions.EmptyPlacesException;
 import GivenPlaces.Utilits.CustomExceptions.EmptyStringException;
 import GivenPlaces.Utilits.CustomExceptions.NotExistingCommandException;
 
-// TODO: Может здесь вообще все убрать и добавить лишь маленькую особенность?
+// Здесь все почти тоже, что и в городе
 public class Capital extends City {
 
     public Capital(String name, int population, String description, String regionAttachment){
