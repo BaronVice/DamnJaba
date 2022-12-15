@@ -1,6 +1,8 @@
 package GivenPlaces;
 
 
+import GivenPlaces.Utilits.CustomExceptions.*;
+
 import java.io.Serializable;
 
 
@@ -31,6 +33,8 @@ public abstract class Place implements Serializable {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    public abstract void handleChange() throws EmptyStringException;
 
     public abstract String toString();
 }

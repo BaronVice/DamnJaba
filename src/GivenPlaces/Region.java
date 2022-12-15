@@ -4,6 +4,7 @@ import GivenPlaces.Utilits.CustomExceptions.*;
 import GivenPlaces.Utilits.Interaction;
 
 import java.util.HashMap;
+import java.util.Scanner;
 
 public class Region extends Place {
     private static final HashMap<String, Region> places = new HashMap<>();
@@ -26,6 +27,14 @@ public class Region extends Place {
     }
 
     public static class RegionInteraction extends Interaction {
+
+        public static String handleRegionName(HashMap<String, City> regionCities) throws  EmptyStringException {
+            String newName = handleName();
+            for (City city : regionCities.values())
+                city.setRegionAttachment(newName);
+            return newName;
+        }
+
         public static void handleOption(String option) throws EmptyStringException, EmptyPlacesException, NotExistingCommandException {
             System.out.println(
                     switch (option) {
@@ -46,14 +55,41 @@ public class Region extends Place {
         }
     }
 
+    public static void showChangeOptions(){
+        System.out.print("""
+                Изменить:
+                1. Имя
+                2. Описание
+                Выбор:\040"""
+        );
+    }
+    public void handleChange() throws EmptyStringException {
+        Scanner scan = new Scanner(System.in);
+
+        showChangeOptions();
+
+        switch (scan.nextLine()) {
+            case "1" -> setName(RegionInteraction.handleRegionName(getCities()));
+            case "2" -> setDescription(Interaction.handleDescription());
+            default -> {
+                System.out.println("Неверно заданная команда. Попробуйте еще раз");
+                handleChange();
+            }
+        }
+    }
+
     public static Region getRegion(City city){
         return places.get(city.getRegionAttachment());
     }
 
     public static void attachCityToRegion(City city){
-        getRegion(city).addCityToRegion(city);
+        if (!city.getRegionAttachment().equals("Не принадлежит какому-либо региону"))
+            getRegion(city).addCityToRegion(city);
     }
-    public static void unattachCityFrom(City city) {getRegion(city).removeCityFromRegion(city);}
+    public static void unattachCityFrom(City city) {
+        if (getRegion(city) != null)
+            getRegion(city).removeCityFromRegion(city);
+    }
 
     public void addCityToRegion(City city){
         cities.put(city.getName(), city);
@@ -71,6 +107,7 @@ public class Region extends Place {
     }
 
     public String toString(){
-        return String.format("%s: %s\nОписание: %s\n", getPlaceType(), name, description);
+        return String.format("%s: %s\nНаселение %d\nОписание: %s\nГорода: %s\n",
+                getPlaceType(), name, calculatePopulation(), description, Interaction.showNames(cities));
     }
 }

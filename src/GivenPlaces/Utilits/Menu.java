@@ -33,7 +33,7 @@ public class Menu {
             switch (choice) {
                 case "1" -> Location.LocationInteraction.handleOption(option);
                 case "2" -> City.CityInteraction.handleOption(option);
-                case "3" -> Capital.CapitalInteraction.handleOption(option);
+                case "3" -> Capital .CapitalInteraction.handleOption(option);
                 case "4" -> Region.RegionInteraction.handleOption(option);
                 case "5" -> goBack = true;
                 default -> System.out.println("Неверно заданная команда. Попробуйте еще раз");

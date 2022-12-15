@@ -16,7 +16,6 @@ public class Location extends Place {
         return "Локация";
     }
 
-
     public static class LocationInteraction extends Interaction {
         public static void handleOption(String option) throws EmptyStringException, EmptyPlacesException, NotExistingCommandException {
             System.out.println(
@@ -35,6 +34,29 @@ public class Location extends Place {
             String name = handleName();
             places.put(name, new Location(name, handleDescription()));
             return String.format("Новое место \"%s %s\" успешно добавлено", getPlaceType(), name);
+        }
+    }
+
+    public static void showChangeOptions(){
+        System.out.print("""
+                Изменить:
+                1. Имя
+                2. Описание
+                Выбор:\040"""
+        );
+    }
+    public void handleChange() throws EmptyStringException {
+        Scanner scan = new Scanner(System.in);
+
+        showChangeOptions();
+
+        switch (scan.nextLine()) {
+            case "1" -> setName(Interaction.handleName());
+            case "2" -> setDescription(Interaction.handleDescription());
+            default -> {
+                System.out.println("Неверно заданная команда. Попробуйте еще раз");
+                handleChange();
+            }
         }
     }
 

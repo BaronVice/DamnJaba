@@ -5,6 +5,7 @@ import GivenPlaces.Utilits.Interaction;
 
 import java.util.HashMap;
 import java.util.InputMismatchException;
+import java.util.Scanner;
 
 
 public class City extends Place {
@@ -35,7 +36,10 @@ public class City extends Place {
     }
 
     public String getRegionAttachment(){
-        return regionAttachment;
+        if (Region.getRegions().containsKey(regionAttachment))
+            return regionAttachment;
+        else
+            return regionAttachment = "Не принадлежит какому-либо региону";
     }
     public void setRegionAttachment(String regionAttachment){
         this.regionAttachment = regionAttachment;
@@ -44,6 +48,8 @@ public class City extends Place {
 
     public static class CityInteraction extends Interaction {
         protected static int handlePopulation(){
+            Scanner scan = new Scanner(System.in);
+
             System.out.print("Население: ");
             try {
                 int population = scan.nextInt();
@@ -54,7 +60,6 @@ public class City extends Place {
             }
             catch (InputMismatchException | NegativePopulationException e){
                 System.out.println("Население должно быть целым числом больше 0");
-                scan.next();
                 return handlePopulation();
             }
         }
@@ -86,6 +91,7 @@ public class City extends Place {
                 2. Нет
                 Выбор:\040"""
             );
+
             String choice = scan.nextLine();
             if ("1".equals(choice)) {
                 return handleRegion();
@@ -110,11 +116,10 @@ public class City extends Place {
                     }
             );
         }
-        protected static String createObject() throws EmptyStringException {
+        private static String createObject() throws EmptyStringException {
             City createdCity = new City(handleName(), handlePopulation(), handleDescription(), handleCityToRegion());
 
-            if (!createdCity.getRegionAttachment().equals("Не принадлежит какому-либо региону"))
-                Region.attachCityToRegion(createdCity);
+            Region.attachCityToRegion(createdCity);
 
             places.put(createdCity.getName(), createdCity);
             return String.format("Новое место \"%s %s\" успешно добавлено", getPlaceType(), createdCity.getName());
@@ -138,7 +143,37 @@ public class City extends Place {
 
     }
 
+    public static void showChangeOptions(){
+        System.out.print("""
+                Изменить:
+                1. Имя
+                2. Население
+                3. Описание
+                4. Принадлежность региону
+                Выбор:\040"""
+        );
+    }
+    public void handleChange() throws EmptyStringException {
+        Scanner scan = new Scanner(System.in);
+
+        showChangeOptions();
+
+        switch (scan.nextLine()) {
+            case "1" -> setName(Interaction.handleName());
+            case "2" -> setPopulation(CityInteraction.handlePopulation());
+            case "3" -> setDescription(Interaction.handleDescription());
+            case "4" -> {
+                Region.unattachCityFrom(places.get(name));
+                setRegionAttachment(CityInteraction.handleCityToRegion());
+            }
+            default -> {
+                System.out.println("Неверно заданная команда. Попробуйте еще раз");
+                handleChange();
+            }
+        }
+    }
+
     public String toString(){
-        return String.format("%s: %s\nНаселение: %d\nОписание: %s\nРегион: %s\n", getPlaceType(), name, population, description, regionAttachment);
+        return String.format("%s: %s\nНаселение: %d\nОписание: %s\nРегион: %s\n", getPlaceType(), name, population, description, getRegionAttachment());
     }
 }

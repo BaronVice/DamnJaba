@@ -16,12 +16,16 @@ public abstract class Interaction {
         return toHandle.substring(0, 1).toUpperCase() + toHandle.substring(1);
     }
 
-    protected static void emptyPlaces(HashMap<String, ? extends Place> places) throws EmptyPlacesException {
+    public static void emptyPlaces(HashMap<String, ? extends Place> places) throws EmptyPlacesException {
         if (places.size() == 0)
             throw new EmptyPlacesException("Удалять нечего - список пуст");
     }
 
-    protected static String handleName() throws EmptyStringException {
+    public static String showNames(HashMap<String, ? extends Place> places){
+        return String.join(", ", places.keySet());
+    }
+
+    public static String handleName() throws EmptyStringException {
         System.out.print("Название: ");
         String name = scan.nextLine().trim();
 
@@ -32,7 +36,7 @@ public abstract class Interaction {
         return name;
     }
 
-    protected static String handleDescription() {
+    public static String handleDescription() {
         System.out.print("Описание: ");
         String description = scan.nextLine().trim();
 
@@ -43,32 +47,14 @@ public abstract class Interaction {
         return description;
     }
 
-    // TODO: похоже в каждом классе надо прописать свое взаимодействие
-    protected static void handleChange(Place place) throws EmptyStringException {
-        System.out.printf("""
-                Текущее место:
-                %s
-                1. Изменить имя
-                2. Изменить описание
-                Выбор:\040""", place.toString()
-        );
-
-        switch (scan.nextLine()) {
-            case "1" -> place.setName(handleName());
-            case "2" -> place.setDescription(handleDescription());
-            default -> {
-                System.out.println("Неверно заданная команда. Попробуйте еще раз");
-                handleChange(place);
-            }
-        }
-    }
-
     protected static String deleteObject(HashMap<String, ? extends Place> places) throws EmptyPlacesException {
         emptyPlaces(places);
         String message = "Выбранное место не найдено";
 
+        System.out.printf("Возможно удалить: %s\n", showNames(places));
         System.out.print("Название места для удаления: ");
         toHandle = capitalize(scan.nextLine().toLowerCase());
+
         if (places.containsKey(toHandle)){
             places.remove(toHandle);
             message = "Выбранное место успешно удалено";
@@ -81,11 +67,12 @@ public abstract class Interaction {
         emptyPlaces(places);
         String message = "Выбранное место не найдено";
 
+        System.out.printf("Возможно изменить: %s\n", showNames(places));
         System.out.print("Название места для изменения: ");
         toHandle = capitalize(scan.nextLine().toLowerCase());
 
         if (places.containsKey(toHandle)){
-            handleChange(places.get(toHandle));
+            places.get(toHandle).handleChange();
             message = "Выбранное место успешно изменено";
         }
 
@@ -93,6 +80,9 @@ public abstract class Interaction {
     }
 
     protected static String showChosenObject(HashMap<String, ? extends Place> places){
+
+        System.out.printf("Возможно вызвать: %s\n", showNames(places));
+
         System.out.print("Название места для вызова: ");
         toHandle = capitalize(scan.nextLine().toLowerCase());
 
@@ -116,7 +106,7 @@ public abstract class Interaction {
 
         String message;
         switch (scan.nextLine()) {
-            case "1" -> message = places.values().stream().map(Place::toString).collect(Collectors.joining(""));
+            case "1" -> message = places.values().stream().map(Place::toString).collect(Collectors.joining("\n"));
             case "2" -> message = showChosenObject(places);
             default -> {
                 System.out.println("Неверно заданная команда. Попробуйте еще раз");
