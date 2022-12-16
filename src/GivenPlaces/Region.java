@@ -2,11 +2,12 @@ package GivenPlaces;
 
 import GivenPlaces.Utilits.CustomExceptions.*;
 import GivenPlaces.Utilits.Interaction;
+import GivenPlaces.Utilits.PlaceHandlers;
 
 import java.util.HashMap;
 import java.util.Scanner;
 
-public class Region extends Place {
+public class Region extends Place implements PlaceHandlers {
     private static final HashMap<String, Region> places = new HashMap<>();
     // За каждым регионом закреплен список городов
     private final HashMap<String, City> cities = new HashMap<>();
@@ -55,6 +56,13 @@ public class Region extends Place {
         }
     }
 
+    public void handleHashMapChange() throws EmptyStringException {
+
+        String oldName = this.name;
+        setName(RegionInteraction.handleRegionName(getCities()));
+        places.put(this.name, places.remove(oldName));
+    }
+
     public static void showChangeOptions(){
         System.out.print("""
                 Изменить:
@@ -69,7 +77,7 @@ public class Region extends Place {
         showChangeOptions();
 
         switch (scan.nextLine()) {
-            case "1" -> setName(RegionInteraction.handleRegionName(getCities()));
+            case "1" -> handleHashMapChange();
             case "2" -> setDescription(Interaction.handleDescription());
             default -> {
                 System.out.println("Неверно заданная команда. Попробуйте еще раз");

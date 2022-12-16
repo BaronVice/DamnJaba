@@ -1,12 +1,16 @@
 package GivenPlaces;
 
 
-import GivenPlaces.Utilits.CustomExceptions.EmptyPlacesException;
-import GivenPlaces.Utilits.CustomExceptions.EmptyStringException;
-import GivenPlaces.Utilits.CustomExceptions.NotExistingCommandException;
+import GivenPlaces.Utilits.CustomExceptions.*;
+import GivenPlaces.Utilits.Interaction;
+import GivenPlaces.Utilits.PlaceHandlers;
+
+import java.util.HashMap;
 
 // Здесь все почти тоже, что и в городе
-public class Capital extends City {
+public class Capital extends City implements PlaceHandlers {
+
+    private static final HashMap<String, City> places = new HashMap<>();
 
     public Capital(String name, int population, String description, String regionAttachment){
         super(name, population, description, regionAttachment);
@@ -22,22 +26,29 @@ public class Capital extends City {
                     switch (option) {
                         case "Создать" -> createObject();
                         case "Удалить" -> deleteCity();
-                        case "Изменить" -> changeObject(City.getCities());
-                        case "Показать" -> showObjects(City.getCities());
+                        case "Изменить" -> changeObject(places);
+                        case "Показать" -> showObjects(places);
                         default -> throw new NotExistingCommandException(
                                 String.format("Системная ошибка: команда \"%s\" не обрабатывается", option));
                     }
             );
         }
-        private static String createObject() throws EmptyStringException {
+        private static String createObject() throws EmptyStringException, EmptyPlacesException {
             Capital createdCapital = new Capital(handleName(), handlePopulation(), handleDescription(), handleCityToRegion());
 
             if (!createdCapital.getRegionAttachment().equals("Не принадлежит какому-либо региону"))
                 Region.attachCityToRegion(createdCapital);
 
-            City.getCities().put(createdCapital.getName(), createdCapital);
+            places.put(createdCapital.getName(), createdCapital);
             return String.format("Новое место \"%s %s\" успешно добавлено", getPlaceType(), createdCapital.getName());
         }
+    }
+
+    public void handleHashMapChange() throws EmptyStringException {
+        String oldName = this.name;
+        setName(Interaction.handleName());
+
+        places.put(this.name, places.remove(oldName));
     }
 
     public String toString(){

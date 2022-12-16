@@ -2,13 +2,14 @@ package GivenPlaces;
 
 import GivenPlaces.Utilits.CustomExceptions.*;
 import GivenPlaces.Utilits.Interaction;
+import GivenPlaces.Utilits.PlaceHandlers;
 
 import java.util.HashMap;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
 
-public class City extends Place {
+public class City extends Place implements PlaceHandlers {
     // Население
     protected int population;
     // Принадлежность к региону
@@ -49,7 +50,7 @@ public class City extends Place {
 
     public static class CityInteraction extends Interaction {
         // Задаем население и проверяем, что оно целое число больше 0
-        protected static int handlePopulation(){
+        protected static int handlePopulation() throws EmptyPlacesException {
             Scanner scan = new Scanner(System.in);
 
             System.out.print("Население: ");
@@ -73,9 +74,10 @@ public class City extends Place {
                     Название региона, которому принадлежит город:\040""",
                     String.join(", ", Region.getRegions().keySet()));
 
-            String regionName = scan.nextLine();
-            if (Region.getRegions().containsKey(regionName))
+            String regionName = capitalize(scan.nextLine().trim());
+            if (Region.getRegions().containsKey(regionName)){
                 return regionName;
+            }
             else{
                 System.out.println("Регион не найден. Выберите из списка доступных регионов");
                 return handleCityToRegion();
@@ -125,7 +127,7 @@ public class City extends Place {
             );
         }
 
-        private static String createObject() throws EmptyStringException {
+        private static String createObject() throws EmptyStringException, EmptyPlacesException {
             City createdCity = new City(handleName(), handlePopulation(), handleDescription(), handleCityToRegion());
 
             Region.attachCityToRegion(createdCity);
@@ -139,7 +141,7 @@ public class City extends Place {
             String message = "Выбранное место не найдено";
 
             System.out.print("Название места для удаления: ");
-            String name = scan.nextLine().toLowerCase();
+            String name = scan.nextLine();
 
             if (places.containsKey(name)) {
                 Region.unattachCityFrom(places.get(name));
@@ -149,6 +151,13 @@ public class City extends Place {
 
             return message;
         }
+    }
+
+    public void handleHashMapChange() throws EmptyStringException {
+        String oldName = this.name;
+        setName(Interaction.handleName());
+
+        places.put(this.name, places.remove(oldName));
     }
 
     public static void showChangeOptions(){
@@ -161,7 +170,7 @@ public class City extends Place {
                 Выбор:\040"""
         );
     }
-    public void handleChange() throws EmptyStringException {
+    public void handleChange() throws EmptyStringException, EmptyPlacesException {
         Scanner scan = new Scanner(System.in);
 
         showChangeOptions();

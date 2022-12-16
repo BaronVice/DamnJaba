@@ -36,6 +36,7 @@ public abstract class Interaction {
         name = capitalize(name);
         return name;
     }
+
     // Обработает описание объекта
     public static String handleDescription() {
         System.out.print("Описание: ");
@@ -54,7 +55,7 @@ public abstract class Interaction {
 
         System.out.printf("Возможно удалить: %s\n", showNames(places));
         System.out.print("Название места для удаления: ");
-        toHandle = capitalize(scan.nextLine().toLowerCase());
+        toHandle = capitalize(scan.nextLine());
 
         if (places.containsKey(toHandle)){
             places.remove(toHandle);
@@ -71,7 +72,7 @@ public abstract class Interaction {
 
         System.out.printf("Возможно изменить: %s\n", showNames(places));
         System.out.print("Название места для изменения: ");
-        toHandle = capitalize(scan.nextLine().toLowerCase());
+        toHandle = capitalize(scan.nextLine());
 
         if (places.containsKey(toHandle)){
             // У каждого объекта есть уникальные поля, поэтому у каждого можно менять что-то свое
@@ -88,7 +89,7 @@ public abstract class Interaction {
         System.out.printf("Возможно вызвать: %s\n", showNames(places));
 
         System.out.print("Название места для вызова: ");
-        toHandle = capitalize(scan.nextLine().toLowerCase());
+        toHandle = capitalize(scan.nextLine());
 
         if (places.containsKey(toHandle)){
             return places.get(toHandle).toString();

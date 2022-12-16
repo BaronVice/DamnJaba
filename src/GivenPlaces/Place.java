@@ -4,6 +4,7 @@ package GivenPlaces;
 import GivenPlaces.Utilits.CustomExceptions.*;
 
 import java.io.Serializable;
+import java.util.HashMap;
 
 
 public abstract class Place {
@@ -35,7 +36,7 @@ public abstract class Place {
     }
 
     // У каждого наследника будут свои возможности для изменения
-    public abstract void handleChange() throws EmptyStringException;
+    public abstract void handleChange() throws EmptyStringException, EmptyPlacesException;
 
     // И описание тоже
     public abstract String toString();

@@ -2,10 +2,11 @@ package GivenPlaces;
 
 import GivenPlaces.Utilits.CustomExceptions.*;
 import GivenPlaces.Utilits.Interaction;
+import GivenPlaces.Utilits.PlaceHandlers;
 
 import java.util.*;
 
-public class Location extends Place {
+public class Location extends Place implements PlaceHandlers {
     // Будем хранить созданные объекты в словарях, чтобы по имени быстро получить доступ
     private static final HashMap<String, Location> places = new HashMap<>();
 
@@ -39,6 +40,12 @@ public class Location extends Place {
         }
     }
 
+    public void handleHashMapChange() throws EmptyStringException {
+        String oldName = this.name;
+        setName(Interaction.handleName());
+
+        places.put(this.name, places.remove(oldName));
+    }
     // Какие изменения могут быть применены
     public static void showChangeOptions(){
         System.out.print("""
@@ -54,9 +61,8 @@ public class Location extends Place {
         Scanner scan = new Scanner(System.in);
 
         showChangeOptions();
-
         switch (scan.nextLine()) {
-            case "1" -> setName(Interaction.handleName());
+            case "1" -> handleHashMapChange();
             case "2" -> setDescription(Interaction.handleDescription());
             default -> {
                 System.out.println("Неверно заданная команда. Попробуйте еще раз");
